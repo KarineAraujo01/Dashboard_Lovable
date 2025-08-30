@@ -1,3 +1,5 @@
+//Esse código foi gerado a partir da plataforma lovable para geração da dashboard.
+
 import React, { useState } from 'react';
 import ExcelUpload from '@/components/ExcelUpload';
 import Dashboard from '@/components/Dashboard';
