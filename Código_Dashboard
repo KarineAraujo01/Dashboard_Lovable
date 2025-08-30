@@ -1,0 +1,128 @@
+import React, { useState } from 'react';
+import ExcelUpload from '@/components/ExcelUpload';
+import Dashboard from '@/components/Dashboard';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft, BarChart3 } from 'lucide-react';
+
+const Index = () => {
+  const [data, setData] = useState<any[]>([]);
+  const [sheetNames, setSheetNames] = useState<string[]>([]);
+  const [showDashboard, setShowDashboard] = useState(false);
+
+  const handleDataLoaded = (newData: any[], sheets: string[]) => {
+    setData(newData);
+    setSheetNames(sheets);
+    setShowDashboard(true);
+  };
+
+  const handleBackToUpload = () => {
+    setShowDashboard(false);
+    setData([]);
+    setSheetNames([]);
+  };
+
+  return (
+    <div className="min-h-screen p-4 md:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto">
+        {!showDashboard ? (
+          <div className="flex flex-col items-center justify-center min-h-[80vh] space-y-8">
+            {/* Hero Section */}
+            <div className="text-center space-y-4 animate-fade-in">
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-primary mb-6 shadow-elegant animate-pulse-slow">
+                <BarChart3 className="w-10 h-10 text-white" />
+              </div>
+              
+              <h1 className="text-4xl md:text-6xl font-bold gradient-text mb-4">
+                LinkedIn Analytics
+              </h1>
+              
+              <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
+                Transforme seus dados do LinkedIn em insights poderosos com visualizações interativas e análises detalhadas
+              </p>
+              
+              <div className="flex flex-wrap justify-center gap-2 mt-6">
+                <div className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
+                  📊 5+ Visualizações
+                </div>
+                <div className="px-3 py-1 bg-accent/10 text-accent rounded-full text-sm font-medium">
+                  🎯 Filtros Interativos
+                </div>
+                <div className="px-3 py-1 bg-secondary/20 text-foreground rounded-full text-sm font-medium">
+                  📈 Análise em Tempo Real
+                </div>
+              </div>
+            </div>
+
+            {/* Upload Component */}
+            <div className="w-full animate-slide-up">
+              <ExcelUpload onDataLoaded={handleDataLoaded} />
+            </div>
+
+            {/* Features Section */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 w-full max-w-4xl">
+              <div className="text-center p-6 rounded-xl bg-card/50 border shadow-pink hover:shadow-elegant transition-all duration-300">
+                <div className="w-12 h-12 bg-gradient-primary rounded-lg mx-auto mb-4 flex items-center justify-center">
+                  <BarChart3 className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="font-semibold mb-2">Múltiplas Visualizações</h3>
+                <p className="text-sm text-muted-foreground">
+                  Gráficos de barras, pizza, linha e área para análise completa
+                </p>
+              </div>
+
+              <div className="text-center p-6 rounded-xl bg-card/50 border shadow-purple hover:shadow-elegant transition-all duration-300">
+                <div className="w-12 h-12 bg-gradient-accent rounded-lg mx-auto mb-4 flex items-center justify-center">
+                  <BarChart3 className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="font-semibold mb-2">Filtros Dinâmicos</h3>
+                <p className="text-sm text-muted-foreground">
+                  Filtre por período, aba e categoria para insights específicos
+                </p>
+              </div>
+
+              <div className="text-center p-6 rounded-xl bg-card/50 border shadow-pink hover:shadow-elegant transition-all duration-300">
+                <div className="w-12 h-12 bg-gradient-secondary rounded-lg mx-auto mb-4 flex items-center justify-center">
+                  <BarChart3 className="w-6 h-6 text-foreground" />
+                </div>
+                <h3 className="font-semibold mb-2">Dados Atualizáveis</h3>
+                <p className="text-sm text-muted-foreground">
+                  Facilmente atualize com novos dados do LinkedIn
+                </p>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div>
+            {/* Dashboard Header */}
+            <div className="flex items-center gap-4 mb-6">
+              <Button 
+                variant="outline" 
+                onClick={handleBackToUpload}
+                className="shadow-pink hover:shadow-elegant"
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Novo Upload
+              </Button>
+              
+              <div className="h-6 w-px bg-border" />
+              
+              <div>
+                <h2 className="text-lg font-semibold">
+                  {data.length} registros carregados
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  {sheetNames.length} aba(s) processada(s)
+                </p>
+              </div>
+            </div>
+
+            {/* Dashboard Component */}
+            <Dashboard data={data} sheetNames={sheetNames} />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default Index;
